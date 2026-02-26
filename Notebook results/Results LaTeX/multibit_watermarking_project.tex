@@ -1,0 +1,2767 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{multibit\_watermarking\_project}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{Multi-bit Black-Box Watermarking of Deep Neural
+Networks}\label{multi-bit-black-box-watermarking-of-deep-neural-networks}
+
+\subsection{Course Project - Machine Learning
+Security}\label{course-project---machine-learning-security}
+
+Andrea Altomare - 2199451\\
+Cybersecurity\\
+Department of Computer Science\\
+Sapienza University of Rome
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsubsection{Overview}\label{overview}
+
+This notebook implements the multi-bit watermarking scheme proposed by
+\textbf{Leroux et al.} (CVPR Workshop 2024), which builds upon
+foundational ideas from \textbf{Adi et al.} (USENIX Security 2018).
+
+\textbf{Core Idea:} We train a neural network to behave in a specific,
+controllable way when presented with specially crafted \emph{trigger
+inputs}. Each watermarked model instance responds differently to the
+same set of triggers, encoding a unique binary signature (watermark).
+This allows the model owner to:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Prove ownership} of a stolen model by querying it with trigger
+  inputs.
+\item
+  \textbf{Trace the source} of a model leak to a specific user/device.
+\end{enumerate}
+
+\subsubsection{Watermarking Pipeline}\label{watermarking-pipeline}
+
+The scheme consists of three phases:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Phase
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Key Generation} & Generate trigger inputs near decision
+boundaries + a bit-encoding scheme \\
+\textbf{Signature Embedding} & Fine-tune a model copy so trigger inputs
+produce the desired watermark bits \\
+\textbf{Watermark Extraction} & Query a suspected model with triggers
+and decode the watermark \\
+\end{longtable}
+}
+
+\subsubsection{Why Black-Box?}\label{why-black-box}
+
+No access to model weights is needed for verification - only the ability
+to query the model and observe its predictions. This is realistic for
+scenarios where a stolen model is deployed behind an API.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+    \subsection{1. Setup \& Imports}\label{setup-imports}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nn}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{optim}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{optim}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn}\PY{n+nn}{.}\PY{n+nn}{functional}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{F}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{utils}\PY{n+nn}{.}\PY{n+nn}{data}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{DataLoader}\PY{p}{,} \PY{n}{TensorDataset}\PY{p}{,} \PY{n}{Subset}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torchvision}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torchvision}\PY{n+nn}{.}\PY{n+nn}{transforms}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{transforms}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torchvision}\PY{n+nn}{.}\PY{n+nn}{models}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{models}
+
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{cluster}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{KMeans}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{copy}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{deepcopy}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{time}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{warnings}
+\PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{tqdm}\PY{n+nn}{.}\PY{n+nn}{notebook}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{tqdm}\PY{p}{,} \PY{n}{trange}
+
+\PY{c+c1}{\PYZsh{} Reproducibility}
+\PY{n}{torch}\PY{o}{.}\PY{n}{manual\PYZus{}seed}\PY{p}{(}\PY{l+m+mi}{42}\PY{p}{)}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{42}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Device configuration}
+\PY{n}{device} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{device}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cuda}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{is\PYZus{}available}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Using device: }\PY{l+s+si}{\PYZob{}}\PY{n}{device}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{if} \PY{n}{device}\PY{o}{.}\PY{n}{type} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cuda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GPU: }\PY{l+s+si}{\PYZob{}}\PY{n}{torch}\PY{o}{.}\PY{n}{cuda}\PY{o}{.}\PY{n}{get\PYZus{}device\PYZus{}name}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} CIFAR\PYZhy{}10 class names}
+\PY{n}{CIFAR10\PYZus{}CLASSES} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{airplane}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{automobile}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bird}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{deer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                   \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{frog}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{horse}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ship}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{truck}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{NUM\PYZus{}CLASSES} \PY{o}{=} \PY{l+m+mi}{10}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Using device: cpu
+    \end{Verbatim}
+
+    \subsubsection{Load CIFAR-10 Dataset}\label{load-cifar-10-dataset}
+
+We use standard data augmentation for training (random crop, horizontal
+flip) and simple normalization for testing.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Data transforms}
+\PY{n}{transform\PYZus{}train} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{RandomCrop}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{RandomHorizontalFlip}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.4914}\PY{p}{,} \PY{l+m+mf}{0.4822}\PY{p}{,} \PY{l+m+mf}{0.4465}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.2023}\PY{p}{,} \PY{l+m+mf}{0.1994}\PY{p}{,} \PY{l+m+mf}{0.2010}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+\PY{p}{]}\PY{p}{)}
+
+\PY{n}{transform\PYZus{}test} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.4914}\PY{p}{,} \PY{l+m+mf}{0.4822}\PY{p}{,} \PY{l+m+mf}{0.4465}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.2023}\PY{p}{,} \PY{l+m+mf}{0.1994}\PY{p}{,} \PY{l+m+mf}{0.2010}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} We also need a transform without augmentation for trigger generation}
+\PY{n}{transform\PYZus{}plain} \PY{o}{=} \PY{n}{transforms}\PY{o}{.}\PY{n}{Compose}\PY{p}{(}\PY{p}{[}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{ToTensor}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{transforms}\PY{o}{.}\PY{n}{Normalize}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.4914}\PY{p}{,} \PY{l+m+mf}{0.4822}\PY{p}{,} \PY{l+m+mf}{0.4465}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mf}{0.2023}\PY{p}{,} \PY{l+m+mf}{0.1994}\PY{p}{,} \PY{l+m+mf}{0.2010}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Load datasets}
+\PY{n}{trainset} \PY{o}{=} \PY{n}{torchvision}\PY{o}{.}\PY{n}{datasets}\PY{o}{.}\PY{n}{CIFAR10}\PY{p}{(}\PY{n}{root}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{train}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{download}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{transform}\PY{o}{=}\PY{n}{transform\PYZus{}train}\PY{p}{)}
+\PY{n}{trainset\PYZus{}plain} \PY{o}{=} \PY{n}{torchvision}\PY{o}{.}\PY{n}{datasets}\PY{o}{.}\PY{n}{CIFAR10}\PY{p}{(}\PY{n}{root}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{train}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{download}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{transform}\PY{o}{=}\PY{n}{transform\PYZus{}plain}\PY{p}{)}
+\PY{n}{testset} \PY{o}{=} \PY{n}{torchvision}\PY{o}{.}\PY{n}{datasets}\PY{o}{.}\PY{n}{CIFAR10}\PY{p}{(}\PY{n}{root}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{train}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{download}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{transform}\PY{o}{=}\PY{n}{transform\PYZus{}test}\PY{p}{)}
+
+\PY{n}{trainloader} \PY{o}{=} \PY{n}{DataLoader}\PY{p}{(}\PY{n}{trainset}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{128}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{num\PYZus{}workers}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{testloader} \PY{o}{=} \PY{n}{DataLoader}\PY{p}{(}\PY{n}{testset}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{128}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}workers}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training samples: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trainset}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Test samples: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{testset}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Training samples: 50000
+Test samples: 10000
+    \end{Verbatim}
+
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{2. Phase 1: Train Base
+Model}\label{phase-1-train-base-model}
+
+We train a \textbf{ResNet-18} on CIFAR-10 as our base (pretrained)
+model. This model will later be watermarked.
+
+\begin{quote}
+\textbf{Note:} ResNet-18 is modified slightly for CIFAR-10: the first
+convolutional layer uses a 3×3 kernel instead of 7×7, and we remove the
+initial max pooling, since CIFAR-10 images are only 32×32.
+\end{quote}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{create\PYZus{}resnet18\PYZus{}cifar10}\PY{p}{(}\PY{n}{num\PYZus{}classes}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Create a ResNet\PYZhy{}18 adapted for CIFAR\PYZhy{}10 (32x32 images).\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{resnet18}\PY{p}{(}\PY{n}{weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{o}{=}\PY{n}{num\PYZus{}classes}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Adapt for 32x32 input: smaller first conv, no maxpool}
+    \PY{n}{model}\PY{o}{.}\PY{n}{conv1} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{64}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{model}\PY{o}{.}\PY{n}{maxpool} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Identity}\PY{p}{(}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{train\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Train a model with SGD and learning rate scheduling.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{SGD}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{weight\PYZus{}decay}\PY{o}{=}\PY{l+m+mf}{5e\PYZhy{}4}\PY{p}{)}
+    \PY{n}{scheduler} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{lr\PYZus{}scheduler}\PY{o}{.}\PY{n}{MultiStepLR}\PY{p}{(}\PY{n}{optimizer}\PY{p}{,} \PY{n}{milestones}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{35}\PY{p}{,} \PY{l+m+mi}{45}\PY{p}{]}\PY{p}{,} \PY{n}{gamma}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{)}
+
+    \PY{n}{history} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{\PYZcb{}}
+
+    \PY{n}{epoch\PYZus{}pbar} \PY{o}{=} \PY{n}{trange}\PY{p}{(}\PY{n}{epochs}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{epoch\PYZus{}pbar}\PY{p}{:}
+        \PY{n}{model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}
+        \PY{n}{running\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.0}
+        \PY{n}{batch\PYZus{}pbar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}\PY{n}{trainloader}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Epoch }\PY{l+s+si}{\PYZob{}}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{epochs}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{batch\PYZus{}pbar}\PY{p}{:}
+            \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+            \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+            \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{n}{targets}\PY{p}{)}
+            \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+            \PY{n}{running\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+            \PY{n}{batch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{n}{scheduler}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+        \PY{n}{avg\PYZus{}loss} \PY{o}{=} \PY{n}{running\PYZus{}loss} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trainloader}\PY{p}{)}
+        \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+        \PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{avg\PYZus{}loss}\PY{p}{)}
+        \PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{p}{)}
+
+        \PY{n}{epoch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{avg\PYZus{}loss}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{acc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{test\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{model}\PY{p}{,} \PY{n}{history}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{dataloader}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Evaluate model accuracy.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+    \PY{n}{correct} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{total} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{dataloader}\PY{p}{:}
+            \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+            \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{predicted} \PY{o}{=} \PY{n}{outputs}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{total} \PY{o}{+}\PY{o}{=} \PY{n}{targets}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+            \PY{n}{correct} \PY{o}{+}\PY{o}{=} \PY{n}{predicted}\PY{o}{.}\PY{n}{eq}\PY{p}{(}\PY{n}{targets}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+    \PY{k}{return} \PY{l+m+mf}{100.} \PY{o}{*} \PY{n}{correct} \PY{o}{/} \PY{n}{total}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Train the base model}\label{train-the-base-model}
+
+Training procedure
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Train base model}
+\PY{n}{base\PYZus{}model} \PY{o}{=} \PY{n}{create\PYZus{}resnet18\PYZus{}cifar10}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training base model on CIFAR\PYZhy{}10...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{train\PYZus{}history} \PY{o}{=} \PY{n}{train\PYZus{}model}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{)}
+
+\PY{n}{baseline\PYZus{}accuracy} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Base model test accuracy: }\PY{l+s+si}{\PYZob{}}\PY{n}{baseline\PYZus{}accuracy}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Save checkpoint}
+\PY{n}{torch}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{o}{.}\PY{n}{state\PYZus{}dict}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{base\PYZus{}model.pth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Base model saved to base\PYZus{}model.pth}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Training base model on CIFAR-10{\ldots}
+
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Training:   0\%|          | 0/50 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 2/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 3/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 4/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 5/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 6/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 7/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 8/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 9/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 10/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 11/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 12/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 13/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 14/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 15/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 16/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 17/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 18/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 19/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 20/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 21/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 22/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 23/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 24/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 25/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 26/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 27/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 28/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 29/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 30/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 31/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 32/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 33/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 34/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 35/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 36/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 37/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 38/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 39/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 40/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 41/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 42/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 43/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 44/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 45/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 46/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 47/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 48/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 49/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 50/50:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Base model test accuracy: 93.53\%
+Base model saved to base\_model.pth
+    \end{Verbatim}
+
+    \subsubsection{(Optional) Load a previously trained base
+model}\label{optional-load-a-previously-trained-base-model}
+
+If there is an already trained model ready to use, uncomment and run
+this cell instead of the training cell above.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZsh{} Uncomment to load a previously saved base model:}
+\PY{c+c1}{\PYZsh{} base\PYZus{}model = create\PYZus{}resnet18\PYZus{}cifar10()}
+\PY{c+c1}{\PYZsh{} base\PYZus{}model.load\PYZus{}state\PYZus{}dict(torch.load(\PYZsq{}base\PYZus{}model.pth\PYZsq{}))}
+\PY{c+c1}{\PYZsh{} base\PYZus{}model = base\PYZus{}model.to(device)}
+\PY{c+c1}{\PYZsh{} baseline\PYZus{}accuracy = evaluate\PYZus{}model(base\PYZus{}model, testloader)}
+\PY{c+c1}{\PYZsh{} print(f\PYZdq{}Loaded base model \PYZhy{} test accuracy: \PYZob{}baseline\PYZus{}accuracy:.2f\PYZcb{}\PYZpc{}\PYZdq{})}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Training Curves}\label{training-curves}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{train\PYZus{}history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Training Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{train\PYZus{}history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{3. Phase 2a: Encoding Scheme
+Generation}\label{phase-2a-encoding-scheme-generation}
+
+Following Leroux et al., we create a mapping
+\(f: Y \rightarrow \{0, 1\}\) that assigns each class to a bit value.
+
+\textbf{Procedure:} 1. Pass a subset of training samples through the
+model and record the \textbf{logit} (pre-softmax) activations. 2.
+Compute the \textbf{mean logit vector} for each class. 3. Apply
+\textbf{K-means clustering} (K=2) on these mean vectors to split the
+classes into two groups: bit ``0'' and bit ``1''.
+
+The meaning of this is that classes with similar internal
+representations will be grouped together, and the two groups will
+correspond to semantically meaningful categories (e.g., vehicles
+vs.~animals).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{generate\PYZus{}encoding\PYZus{}scheme}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{dataset}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate the bit encoding scheme f: class\PYZus{}label \PYZhy{}\PYZgt{} \PYZob{}0, 1\PYZcb{}}
+\PY{l+s+sd}{    by clustering the mean logit vectors of each class.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Collect logits per class}
+    \PY{n}{class\PYZus{}logits} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:} \PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{\PYZcb{}}
+
+    \PY{n}{loader} \PY{o}{=} \PY{n}{DataLoader}\PY{p}{(}\PY{n}{dataset}\PY{p}{,} \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{128}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{num\PYZus{}workers}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{samples\PYZus{}collected} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Collecting logits from training samples...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n}{loader}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Computing logits}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+            \PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{targets}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{n}{class\PYZus{}logits}\PY{p}{[}\PY{n}{targets}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{logits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{samples\PYZus{}collected} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{targets}\PY{p}{)}
+            \PY{k}{if} \PY{n}{samples\PYZus{}collected} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{num\PYZus{}samples}\PY{p}{:}
+                \PY{k}{break}
+
+    \PY{c+c1}{\PYZsh{} Compute mean logit vector per class}
+    \PY{n}{mean\PYZus{}logits} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{class\PYZus{}logits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} K\PYZhy{}means clustering into 2 groups}
+    \PY{n}{kmeans} \PY{o}{=} \PY{n}{KMeans}\PY{p}{(}\PY{n}{n\PYZus{}clusters}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{,} \PY{n}{n\PYZus{}init}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+    \PY{n}{labels} \PY{o}{=} \PY{n}{kmeans}\PY{o}{.}\PY{n}{fit\PYZus{}predict}\PY{p}{(}\PY{n}{mean\PYZus{}logits}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Build encoding scheme: class\PYZus{}index \PYZhy{}\PYZgt{} bit}
+    \PY{n}{encoding\PYZus{}scheme} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:} \PY{n+nb}{int}\PY{p}{(}\PY{n}{labels}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{\PYZcb{}}
+
+    \PY{k}{return} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{mean\PYZus{}logits}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Generate encoding scheme}
+\PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{mean\PYZus{}logits} \PY{o}{=} \PY{n}{generate\PYZus{}encoding\PYZus{}scheme}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{trainset\PYZus{}plain}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Display the encoding}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Encoding scheme f: class \PYZhy{}\PYZgt{} bit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{40}\PY{p}{)}
+\PY{k}{for} \PY{n}{cls\PYZus{}idx}\PY{p}{,} \PY{n}{bit} \PY{o+ow}{in} \PY{n}{encoding\PYZus{}scheme}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  }\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{cls\PYZus{}idx}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}12s}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ (class }\PY{l+s+si}{\PYZob{}}\PY{n}{cls\PYZus{}idx}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{) \PYZhy{}\PYZgt{} bit }\PY{l+s+si}{\PYZob{}}\PY{n}{bit}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Identify groups}
+\PY{n}{bit0\PYZus{}classes} \PY{o}{=} \PY{p}{[}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{encoding\PYZus{}scheme}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{b} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{bit1\PYZus{}classes} \PY{o}{=} \PY{p}{[}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{encoding\PYZus{}scheme}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{b} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Bit 0 group: }\PY{l+s+si}{\PYZob{}}\PY{n}{bit0\PYZus{}classes}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bit 1 group: }\PY{l+s+si}{\PYZob{}}\PY{n}{bit1\PYZus{}classes}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Collecting logits from training samples{\ldots}
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Computing logits:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Encoding scheme f: class -> bit
+----------------------------------------
+      airplane (class 0) -> bit 1
+    automobile (class 1) -> bit 1
+          bird (class 2) -> bit 0
+           cat (class 3) -> bit 0
+          deer (class 4) -> bit 0
+           dog (class 5) -> bit 0
+          frog (class 6) -> bit 0
+         horse (class 7) -> bit 0
+          ship (class 8) -> bit 1
+         truck (class 9) -> bit 1
+
+Bit 0 group: ['bird', 'cat', 'deer', 'dog', 'frog', 'horse']
+Bit 1 group: ['airplane', 'automobile', 'ship', 'truck']
+    \end{Verbatim}
+
+    \subsubsection{Visualize the Clustering}\label{visualize-the-clustering}
+
+We can visualize the mean logit vectors to see how the classes are
+grouped.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}e74c3c}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{encoding\PYZus{}scheme}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}3498db}\PY{l+s+s1}{\PYZsq{}} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{]}
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{:}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{x} \PY{o}{+} \PY{n}{i} \PY{o}{*} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{n}{mean\PYZus{}logits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{)}  \PY{c+c1}{\PYZsh{} invisible, just for spacing}
+
+\PY{c+c1}{\PYZsh{} Plot as grouped heatmap\PYZhy{}style}
+\PY{n}{im} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mean\PYZus{}logits}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{aspect}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{auto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RdBu\PYZus{}r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{interpolation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nearest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticklabels}\PY{p}{(}\PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{(bit }\PY{l+s+si}{\PYZob{}}\PY{n}{encoding\PYZus{}scheme}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Logit dimension}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean Logit Vectors per Class (colored by bit assignment)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{im}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Logit value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{4. Phase 2b: Trigger Input
+Generation}\label{phase-2b-trigger-input-generation}
+
+This is the most critical phase. We generate \textbf{K trigger inputs},
+each positioned near the \textbf{decision boundary} between two classes
+from different bit groups.
+
+\textbf{For each trigger input:} 1. Randomly select one sample from a
+bit-0 class and one from a bit-1 class. 2. Average them pixel-wise as
+initialization. 3. Optimize the combined image via gradient descent
+(model weights frozen) to minimize:
+
+\[\mathcal{L}(x) = \text{ReLU}(k - Z_i(x)) + \text{ReLU}(k - Z_j(x)) + \sum_{t \neq i,j} Z_t(x)\]
+
+where \(Z\) is the logit vector, \(i\) is a class from bit-0 group,
+\(j\) from bit-1 group, and \(k\) is a threshold hyperparameter.
+
+\textbf{Meaning:} We want the model to be equally confident about class
+\(i\) and class \(j\) (i.e., the input sits right on the decision
+boundary). Later, during embedding, we just need a tiny ``nudge'' to
+push it to one side or the other.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{get\PYZus{}samples\PYZus{}by\PYZus{}class}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Organize dataset indices by class.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{class\PYZus{}indices} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{i}\PY{p}{:} \PY{p}{[}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{\PYZcb{}}
+    \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Indexing dataset by class}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{n}{dataset}\PY{p}{[}\PY{n}{idx}\PY{p}{]}
+        \PY{n}{class\PYZus{}indices}\PY{p}{[}\PY{n}{label}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{idx}\PY{p}{)}
+    \PY{k}{return} \PY{n}{class\PYZus{}indices}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{generate\PYZus{}trigger\PYZus{}inputs}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{dataset}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{K}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{k\PYZus{}threshold}\PY{o}{=}\PY{l+m+mf}{8.0}\PY{p}{,}
+                            \PY{n}{optimize\PYZus{}steps}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Generate K trigger inputs near the decision boundary.}
+
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        model: Pretrained model (frozen during optimization)}
+\PY{l+s+sd}{        dataset: Training dataset (with plain transforms)}
+\PY{l+s+sd}{        encoding\PYZus{}scheme: class \PYZhy{}\PYZgt{} bit mapping}
+\PY{l+s+sd}{        K: Number of trigger inputs (= watermark bit length)}
+\PY{l+s+sd}{        k\PYZus{}threshold: Minimum logit threshold for Eq. 1}
+\PY{l+s+sd}{        optimize\PYZus{}steps: Number of gradient descent steps}
+\PY{l+s+sd}{        lr: Learning rate for input optimization}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        trigger\PYZus{}inputs: Tensor of shape (K, 3, 32, 32)}
+\PY{l+s+sd}{        trigger\PYZus{}pairs: List of (class\PYZus{}i, class\PYZus{}j) for each trigger}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+    \PY{n}{class\PYZus{}indices} \PY{o}{=} \PY{n}{get\PYZus{}samples\PYZus{}by\PYZus{}class}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+
+    \PY{n}{bit0\PYZus{}classes} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{encoding\PYZus{}scheme}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{b} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{bit1\PYZus{}classes} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c}\PY{p}{,} \PY{n}{b} \PY{o+ow}{in} \PY{n}{encoding\PYZus{}scheme}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{b} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+
+    \PY{n}{trigger\PYZus{}inputs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{trigger\PYZus{}pairs} \PY{o}{=} \PY{p}{[}\PY{p}{]}  \PY{c+c1}{\PYZsh{} (bit0\PYZus{}class, bit1\PYZus{}class) for each trigger}
+    \PY{n}{optimization\PYZus{}losses} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{n}{trigger\PYZus{}pbar} \PY{o}{=} \PY{n}{trange}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generating triggers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{trigger\PYZus{}idx} \PY{o+ow}{in} \PY{n}{trigger\PYZus{}pbar}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Randomly pick one class from each bit group}
+        \PY{n}{class\PYZus{}i} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{bit0\PYZus{}classes}\PY{p}{)}  \PY{c+c1}{\PYZsh{} bit 0}
+        \PY{n}{class\PYZus{}j} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{bit1\PYZus{}classes}\PY{p}{)}  \PY{c+c1}{\PYZsh{} bit 1}
+
+        \PY{c+c1}{\PYZsh{} Get random samples from each class}
+        \PY{n}{idx\PYZus{}i} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{class\PYZus{}indices}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{p}{)}
+        \PY{n}{idx\PYZus{}j} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{class\PYZus{}indices}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{p}{)}
+
+        \PY{n}{sample\PYZus{}i}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{dataset}\PY{p}{[}\PY{n}{idx\PYZus{}i}\PY{p}{]}
+        \PY{n}{sample\PYZus{}j}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{dataset}\PY{p}{[}\PY{n}{idx\PYZus{}j}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} Initialize: average of the two samples}
+        \PY{n}{x} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{sample\PYZus{}i} \PY{o}{+} \PY{n}{sample\PYZus{}j}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{2.0}\PY{p}{)}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{clone}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{requires\PYZus{}grad\PYZus{}}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+
+        \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{]}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{)}
+
+        \PY{n}{opt\PYZus{}pbar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{optimize\PYZus{}steps}\PY{p}{)}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Trigger }\PY{l+s+si}{\PYZob{}}\PY{n}{trigger\PYZus{}idx}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{k}{for} \PY{n}{step} \PY{o+ow}{in} \PY{n}{opt\PYZus{}pbar}\PY{p}{:}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+            \PY{n}{logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+            \PY{n}{z} \PY{o}{=} \PY{n}{logits}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+            \PY{c+c1}{\PYZsh{} Equation 1 from Leroux et al.}
+            \PY{n}{loss\PYZus{}i} \PY{o}{=} \PY{n}{F}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{k\PYZus{}threshold} \PY{o}{\PYZhy{}} \PY{n}{z}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{p}{)}
+            \PY{n}{loss\PYZus{}j} \PY{o}{=} \PY{n}{F}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{k\PYZus{}threshold} \PY{o}{\PYZhy{}} \PY{n}{z}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{p}{)}
+            \PY{n}{loss\PYZus{}others} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{z}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)} \PY{k}{if} \PY{n}{t} \PY{o}{!=} \PY{n}{class\PYZus{}i} \PY{o+ow}{and} \PY{n}{t} \PY{o}{!=} \PY{n}{class\PYZus{}j}\PY{p}{)}
+
+            \PY{n}{loss} \PY{o}{=} \PY{n}{loss\PYZus{}i} \PY{o}{+} \PY{n}{loss\PYZus{}j} \PY{o}{+} \PY{n}{loss\PYZus{}others}
+            \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+
+            \PY{k}{if} \PY{n}{step} \PY{o}{\PYZpc{}} \PY{l+m+mi}{100} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{opt\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                      \PY{n}{Zi}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                      \PY{n}{Zj}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{n}{trigger\PYZus{}inputs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}
+        \PY{n}{trigger\PYZus{}pairs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{class\PYZus{}i}\PY{p}{,} \PY{n}{class\PYZus{}j}\PY{p}{)}\PY{p}{)}
+        \PY{n}{optimization\PYZus{}losses}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+        \PY{n}{final\PYZus{}logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{p}{)}
+        \PY{n}{trigger\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}
+            \PY{n}{classes}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{vs}\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{Zi}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{final\PYZus{}logits}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{Zj}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{final\PYZus{}logits}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+        \PY{p}{)}
+
+    \PY{n}{trigger\PYZus{}inputs} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{)}
+    \PY{k}{return} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{optimization\PYZus{}losses}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Generate trigger inputs}
+\PY{n}{K} \PY{o}{=} \PY{l+m+mi}{30}  \PY{c+c1}{\PYZsh{} Watermark length in bits}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Generating }\PY{l+s+si}{\PYZob{}}\PY{n}{K}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ trigger inputs...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This will create 2\PYZca{}}\PY{l+s+si}{\PYZob{}}\PY{n}{K}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{n}{K}\PY{l+s+si}{:}\PY{l+s+s2}{,}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ possible unique watermarks}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{opt\PYZus{}losses} \PY{o}{=} \PY{n}{generate\PYZus{}trigger\PYZus{}inputs}\PY{p}{(}
+    \PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{trainset\PYZus{}plain}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{K}\PY{o}{=}\PY{n}{K}\PY{p}{,}
+    \PY{n}{k\PYZus{}threshold}\PY{o}{=}\PY{l+m+mf}{8.0}\PY{p}{,} \PY{n}{optimize\PYZus{}steps}\PY{o}{=}\PY{l+m+mi}{800}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.01}
+\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Trigger inputs shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{trigger\PYZus{}inputs}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mean optimization loss: }\PY{l+s+si}{\PYZob{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{opt\PYZus{}losses}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Generating 30 trigger inputs{\ldots}
+This will create 2\^{}30 = 1,073,741,824 possible unique watermarks
+
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Indexing dataset by class:   0\%|          | 0/50000 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Generating triggers:   0\%|          | 0/30 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 1:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 2:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 3:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 4:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 5:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 6:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 7:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 8:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 9:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 10:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 11:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 12:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 13:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 14:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 15:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 16:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 17:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 18:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 19:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 20:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 21:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 22:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 23:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 24:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 25:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 26:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 27:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 28:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 29:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Trigger 30:   0\%|          | 0/800 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Trigger inputs shape: torch.Size([30, 3, 32, 32])
+Mean optimization loss: -42.8286
+    \end{Verbatim}
+
+    \subsubsection{Visualize Trigger Inputs}\label{visualize-trigger-inputs}
+
+Let's visualize some of the generated trigger inputs and their logit
+distributions, similar to Figure 2 in the paper.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{denormalize}\PY{p}{(}\PY{n}{tensor}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Reverse CIFAR\PYZhy{}10 normalization for visualization.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{mean} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tensor}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.4914}\PY{p}{,} \PY{l+m+mf}{0.4822}\PY{p}{,} \PY{l+m+mf}{0.4465}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{std} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tensor}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.2023}\PY{p}{,} \PY{l+m+mf}{0.1994}\PY{p}{,} \PY{l+m+mf}{0.2010}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{k}{return} \PY{n}{torch}\PY{o}{.}\PY{n}{clamp}\PY{p}{(}\PY{n}{tensor} \PY{o}{*} \PY{n}{std} \PY{o}{+} \PY{n}{mean}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{plot\PYZus{}trigger\PYZus{}inputs}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{model}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Visualize trigger inputs and their logit distributions.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{3} \PY{o}{*} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{idx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Show image}
+        \PY{n}{img} \PY{o}{=} \PY{n}{denormalize}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img}\PY{o}{.}\PY{n}{permute}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{class\PYZus{}i}\PY{p}{,} \PY{n}{class\PYZus{}j} \PY{o}{=} \PY{n}{trigger\PYZus{}pairs}\PY{p}{[}\PY{n}{idx}\PY{p}{]}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Trigger }\PY{l+s+si}{\PYZob{}}\PY{n}{idx}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{class\PYZus{}i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ (bit 0) vs }\PY{l+s+si}{\PYZob{}}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{class\PYZus{}j}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ (bit 1)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}
+        \PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Show logit distribution}
+        \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}e74c3c}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{encoding\PYZus{}scheme}\PY{p}{[}\PY{n}{c}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}3498db}\PY{l+s+s1}{\PYZsq{}} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{]}
+        \PY{n}{bars} \PY{o}{=} \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{,} \PY{n}{logits}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{n}{colors}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xticklabels}\PY{p}{(}\PY{p}{[}\PY{n}{CIFAR10\PYZus{}CLASSES}\PY{p}{[}\PY{n}{c}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NUM\PYZus{}CLASSES}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                                      \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{45}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Logit}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Logit Distribution (red=bit0, blue=bit1)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+        \PY{n}{axes}\PY{p}{[}\PY{n}{idx}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+
+\PY{n}{plot\PYZus{}trigger\PYZus{}inputs}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{5. Phase 3: Signature
+Embedding}\label{phase-3-signature-embedding}
+
+Now we embed a specific watermark bitstring into a copy of the base
+model.
+
+\textbf{How it works:} For each trigger input, based on the desired bit:
+- If the desired bit is 0, the target label is the bit-0 class from the
+trigger pair. - If the desired bit is 1, the target label is the bit-1
+class from the trigger pair.
+
+We fine-tune the model on the original training data \textbf{combined}
+with the trigger inputs (each assigned its target label). Since the
+trigger inputs are already near the decision boundary, only a small
+adjustment is needed (this is why embedding is fast).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{embed\PYZus{}watermark}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+                    \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Embed a watermark bitstring into a copy of the base model.}
+
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        base\PYZus{}model: The pretrained model to watermark}
+\PY{l+s+sd}{        trainloader: Original training data loader}
+\PY{l+s+sd}{        trigger\PYZus{}inputs: Tensor of trigger inputs (K, C, H, W)}
+\PY{l+s+sd}{        trigger\PYZus{}pairs: List of (class\PYZus{}i, class\PYZus{}j) pairs}
+\PY{l+s+sd}{        encoding\PYZus{}scheme: class \PYZhy{}\PYZgt{} bit mapping}
+\PY{l+s+sd}{        watermark\PYZus{}bits: List/array of 0s and 1s (length K)}
+\PY{l+s+sd}{        epochs: Fine\PYZhy{}tuning epochs}
+\PY{l+s+sd}{        lr: Learning rate for fine\PYZhy{}tuning}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        watermarked\PYZus{}model: Model with embedded watermark}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{} Create a deep copy of the base model}
+    \PY{n}{wm\PYZus{}model} \PY{o}{=} \PY{n}{deepcopy}\PY{p}{(}\PY{n}{base\PYZus{}model}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{SGD}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{weight\PYZus{}decay}\PY{o}{=}\PY{l+m+mf}{5e\PYZhy{}4}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Prepare trigger targets based on desired watermark bits}
+    \PY{n}{trigger\PYZus{}targets} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{p}{(}\PY{n}{class\PYZus{}i}\PY{p}{,} \PY{n}{class\PYZus{}j}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{trigger\PYZus{}pairs}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{watermark\PYZus{}bits}\PY{p}{[}\PY{n}{k}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{trigger\PYZus{}targets}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{class\PYZus{}i}\PY{p}{)}  \PY{c+c1}{\PYZsh{} bit\PYZhy{}0 class}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{trigger\PYZus{}targets}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{class\PYZus{}j}\PY{p}{)}  \PY{c+c1}{\PYZsh{} bit\PYZhy{}1 class}
+    \PY{n}{trigger\PYZus{}targets} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tensor}\PY{p}{(}\PY{n}{trigger\PYZus{}targets}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{torch}\PY{o}{.}\PY{n}{long}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{trigger\PYZus{}data} \PY{o}{=} \PY{n}{trigger\PYZus{}inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+    \PY{n}{wm\PYZus{}model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}
+    \PY{n}{epoch\PYZus{}pbar} \PY{o}{=} \PY{n}{trange}\PY{p}{(}\PY{n}{epochs}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Embedding watermark}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{epoch\PYZus{}pbar}\PY{p}{:}
+        \PY{n}{running\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.0}
+        \PY{n}{batch\PYZus{}pbar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}\PY{n}{trainloader}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Epoch }\PY{l+s+si}{\PYZob{}}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{/}\PY{l+s+si}{\PYZob{}}\PY{n}{epochs}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{k}{for} \PY{n}{batch\PYZus{}inputs}\PY{p}{,} \PY{n}{batch\PYZus{}targets} \PY{o+ow}{in} \PY{n}{batch\PYZus{}pbar}\PY{p}{:}
+            \PY{n}{batch\PYZus{}inputs}\PY{p}{,} \PY{n}{batch\PYZus{}targets} \PY{o}{=} \PY{n}{batch\PYZus{}inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{batch\PYZus{}targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Append a few trigger samples to each batch}
+            \PY{n}{num\PYZus{}triggers\PYZus{}per\PYZus{}batch} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trigger\PYZus{}data}\PY{p}{)}\PY{p}{)}
+            \PY{n}{trig\PYZus{}indices} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randperm}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trigger\PYZus{}data}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{n}{num\PYZus{}triggers\PYZus{}per\PYZus{}batch}\PY{p}{]}
+
+            \PY{n}{combined\PYZus{}inputs} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{cat}\PY{p}{(}\PY{p}{[}\PY{n}{batch\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}data}\PY{p}{[}\PY{n}{trig\PYZus{}indices}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+            \PY{n}{combined\PYZus{}targets} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{cat}\PY{p}{(}\PY{p}{[}\PY{n}{batch\PYZus{}targets}\PY{p}{,} \PY{n}{trigger\PYZus{}targets}\PY{p}{[}\PY{n}{trig\PYZus{}indices}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+            \PY{n}{outputs} \PY{o}{=} \PY{n}{wm\PYZus{}model}\PY{p}{(}\PY{n}{combined\PYZus{}inputs}\PY{p}{)}
+            \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{outputs}\PY{p}{,} \PY{n}{combined\PYZus{}targets}\PY{p}{)}
+            \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+            \PY{n}{running\PYZus{}loss} \PY{o}{+}\PY{o}{=} \PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+            \PY{n}{batch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{loss}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{n}{avg\PYZus{}loss} \PY{o}{=} \PY{n}{running\PYZus{}loss} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trainloader}\PY{p}{)}
+        \PY{n}{epoch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{avg\PYZus{}loss}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{wm\PYZus{}model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Extract the watermark bitstring from a model.}
+
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        model: The model to extract from}
+\PY{l+s+sd}{        trigger\PYZus{}inputs: Tensor of trigger inputs}
+\PY{l+s+sd}{        trigger\PYZus{}pairs: List of (class\PYZus{}i, class\PYZus{}j) pairs}
+\PY{l+s+sd}{        encoding\PYZus{}scheme: class \PYZhy{}\PYZgt{} bit mapping}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        extracted\PYZus{}bits: List of extracted bits}
+\PY{l+s+sd}{        raw\PYZus{}predictions: List of predicted class indices}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+    \PY{n}{extracted\PYZus{}bits} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{raw\PYZus{}predictions} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+    \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{trigger\PYZus{}inputs}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+            \PY{n}{predicted\PYZus{}class} \PY{o}{=} \PY{n}{logits}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{dim}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+            \PY{n}{bit} \PY{o}{=} \PY{n}{encoding\PYZus{}scheme}\PY{p}{[}\PY{n}{predicted\PYZus{}class}\PY{p}{]}
+            \PY{n}{extracted\PYZus{}bits}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{bit}\PY{p}{)}
+            \PY{n}{raw\PYZus{}predictions}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{predicted\PYZus{}class}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{extracted\PYZus{}bits}\PY{p}{,} \PY{n}{raw\PYZus{}predictions}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{original\PYZus{}bits}\PY{p}{,} \PY{n}{extracted\PYZus{}bits}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Compute bit\PYZhy{}level accuracy of extracted watermark.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{correct} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{o} \PY{o}{==} \PY{n}{e} \PY{k}{for} \PY{n}{o}\PY{p}{,} \PY{n}{e} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{original\PYZus{}bits}\PY{p}{,} \PY{n}{extracted\PYZus{}bits}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{correct} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{original\PYZus{}bits}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{100}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Embed Watermarks into Multiple Model
+Instances}\label{embed-watermarks-into-multiple-model-instances}
+
+We create 3 different watermarked instances, each with a unique
+signature, to demonstrate the multi-bit capability.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Generate 3 different watermark signatures}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{123}\PY{p}{)}
+\PY{n}{watermarks} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Instance A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n}{K}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Instance B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n}{K}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Instance C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n}{K}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} Display watermarks}
+\PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{wm} \PY{o+ow}{in} \PY{n}{watermarks}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,}\PY{+w}{ }\PY{n}{wm}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Instance A: 010000011011010101100011101000
+Instance B: 011100100101011100001100101001
+Instance C: 010100001001111000011000010110
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Embed watermarks}
+\PY{n}{watermarked\PYZus{}models} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{embedding\PYZus{}times} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+\PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{wm\PYZus{}bits} \PY{o+ow}{in} \PY{n}{watermarks}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{50}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Embedding watermark for }\PY{l+s+si}{\PYZob{}}\PY{n}{name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watermark: }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,}\PY{+w}{ }\PY{n}{wm\PYZus{}bits}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{50}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{wm\PYZus{}model} \PY{o}{=} \PY{n}{embed\PYZus{}watermark}\PY{p}{(}
+        \PY{n}{base\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+        \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{wm\PYZus{}bits}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.001}
+    \PY{p}{)}
+    \PY{n}{elapsed} \PY{o}{=} \PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{start\PYZus{}time}
+
+    \PY{n}{watermarked\PYZus{}models}\PY{p}{[}\PY{n}{name}\PY{p}{]} \PY{o}{=} \PY{n}{wm\PYZus{}model}
+    \PY{n}{embedding\PYZus{}times}\PY{p}{[}\PY{n}{name}\PY{p}{]} \PY{o}{=} \PY{n}{elapsed}
+
+    \PY{c+c1}{\PYZsh{} Evaluate}
+    \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+    \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+    \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{wm\PYZus{}bits}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{  Test accuracy:      }\PY{l+s+si}{\PYZob{}}\PY{n}{test\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  Watermark accuracy: }\PY{l+s+si}{\PYZob{}}\PY{n}{wm\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  Embedding time:     }\PY{l+s+si}{\PYZob{}}\PY{n}{elapsed}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+==================================================
+Embedding watermark for Instance A{\ldots}
+Watermark: 010000011011010101100011101000
+==================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Embedding watermark:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 2/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 3/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 4/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 5/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+  Test accuracy:      93.43\%
+  Watermark accuracy: 100.0\%
+  Embedding time:     2212.1s
+
+==================================================
+Embedding watermark for Instance B{\ldots}
+Watermark: 011100100101011100001100101001
+==================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Embedding watermark:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 2/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 3/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 4/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 5/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+  Test accuracy:      93.57\%
+  Watermark accuracy: 100.0\%
+  Embedding time:     2230.2s
+
+==================================================
+Embedding watermark for Instance C{\ldots}
+Watermark: 010100001001111000011000010110
+==================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Embedding watermark:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 2/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 3/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 4/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 5/5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+  Test accuracy:      93.31\%
+  Watermark accuracy: 100.0\%
+  Embedding time:     2243.5s
+    \end{Verbatim}
+
+    \subsubsection{Results Summary}\label{results-summary}
+
+Let's compare all model instances side by side.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Summary table}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test Acc}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{WM Acc}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}8}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{48}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Base (no WM)}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{baseline\PYZus{}accuracy}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}9.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{N/A}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{N/A}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}8}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{wm\PYZus{}model} \PY{o+ow}{in} \PY{n}{watermarked\PYZus{}models}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+    \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+    \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermarks}\PY{p}{[}\PY{n}{name}\PY{p}{]}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+    \PY{n}{t} \PY{o}{=} \PY{n}{embedding\PYZus{}times}\PY{p}{[}\PY{n}{name}\PY{p}{]}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{name}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{test\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}9.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{wm\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}9.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{t}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}7.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Model             Test Acc     WM Acc     Time
+------------------------------------------------
+Base (no WM)        93.53\%        N/A      N/A
+Instance A          93.43\%     100.0\%  2212.1s
+Instance B          93.57\%     100.0\%  2230.2s
+Instance C          93.31\%     100.0\%  2243.5s
+    \end{Verbatim}
+
+    \subsubsection{Verify Uniqueness of
+Watermarks}\label{verify-uniqueness-of-watermarks}
+
+Each model instance should produce a \textbf{different} watermark when
+queried with the same trigger inputs. Let's verify this.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cross\PYZhy{}extraction matrix: rows = models, columns = watermark bits}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Extracted Watermark}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}35}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matches}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{65}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{wm\PYZus{}model} \PY{o+ow}{in} \PY{n}{watermarked\PYZus{}models}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{wm\PYZus{}model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+    \PY{n}{extracted\PYZus{}str} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}\PY{p}{)}
+    \PY{n}{original\PYZus{}str} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,} \PY{n}{watermarks}\PY{p}{[}\PY{n}{name}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{match} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{YES ✓}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n}{extracted\PYZus{}str} \PY{o}{==} \PY{n}{original\PYZus{}str} \PY{k}{else} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PARTIAL}\PY{l+s+s2}{\PYZdq{}}
+    \PY{n}{acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermarks}\PY{p}{[}\PY{n}{name}\PY{p}{]}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{name}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{extracted\PYZus{}str}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}35}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{acc}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}6.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{match}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Cross-extraction matrix: rows = models, columns = watermark bits
+
+Model           Extracted Watermark                    Matches
+-----------------------------------------------------------------
+Instance A      010000011011010101100011101000       100.0\% YES ✓
+Instance B      011100100101011100001100101001       100.0\% YES ✓
+Instance C      010100001001111000011000010110       100.0\% YES ✓
+    \end{Verbatim}
+
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{6. Robustness Evaluation}\label{robustness-evaluation}
+
+A watermark is only useful if it survives attempts to remove it. We
+evaluate robustness against several common attacks from the literature:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3810}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6190}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Attack
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Fine-Tune (FT)} & Fine-tune all weights on the original training
+set \\
+\textbf{Retrain Last Layer (RT)} & Reinitialize + retrain the last
+layer \\
+\textbf{Fine-Pruning (FP)} & Prune least-active neurons then
+fine-tune \\
+\textbf{Input Noising (IN)} & Add Gaussian noise to inputs at inference
+time \\
+\end{longtable}
+}
+
+For each attack, we track \textbf{both} the model's test accuracy and
+the watermark bit accuracy.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{fine\PYZus{}tune\PYZus{}attack}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+                     \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Fine\PYZhy{}tune all layers (FT attack).\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model} \PY{o}{=} \PY{n}{deepcopy}\PY{p}{(}\PY{n}{model}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+    \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{SGD}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{weight\PYZus{}decay}\PY{o}{=}\PY{l+m+mf}{5e\PYZhy{}4}\PY{p}{)}
+
+    \PY{n}{results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{\PYZcb{}}
+
+    \PY{n}{epoch\PYZus{}pbar} \PY{o}{=} \PY{n}{trange}\PY{p}{(}\PY{n}{epochs}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FT Attack}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{epoch\PYZus{}pbar}\PY{p}{:}
+        \PY{n}{model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}
+        \PY{n}{batch\PYZus{}pbar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}\PY{n}{trainloader}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FT Epoch }\PY{l+s+si}{\PYZob{}}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{batch\PYZus{}pbar}\PY{p}{:}
+            \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+            \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{p}{)}
+            \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+        \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+        \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+        \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{wm\PYZus{}acc}\PY{p}{)}
+
+        \PY{n}{epoch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{test\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{wm\PYZus{}acc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{wm\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{results}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{retrain\PYZus{}last\PYZus{}layer\PYZus{}attack}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+                               \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Reinitialize and retrain last layer, then fine\PYZhy{}tune all (RT attack).\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{model} \PY{o}{=} \PY{n}{deepcopy}\PY{p}{(}\PY{n}{model}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Reinitialize last layer}
+    \PY{n}{nn}\PY{o}{.}\PY{n}{init}\PY{o}{.}\PY{n}{xavier\PYZus{}uniform\PYZus{}}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{fc}\PY{o}{.}\PY{n}{weight}\PY{p}{)}
+    \PY{n}{nn}\PY{o}{.}\PY{n}{init}\PY{o}{.}\PY{n}{zeros\PYZus{}}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{fc}\PY{o}{.}\PY{n}{bias}\PY{p}{)}
+
+    \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+    \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{SGD}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{n}{lr}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{weight\PYZus{}decay}\PY{o}{=}\PY{l+m+mf}{5e\PYZhy{}4}\PY{p}{)}
+
+    \PY{n}{results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{\PYZcb{}}
+
+    \PY{n}{epoch\PYZus{}pbar} \PY{o}{=} \PY{n}{trange}\PY{p}{(}\PY{n}{epochs}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RT Attack}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{epoch\PYZus{}pbar}\PY{p}{:}
+        \PY{n}{model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}
+        \PY{n}{batch\PYZus{}pbar} \PY{o}{=} \PY{n}{tqdm}\PY{p}{(}\PY{n}{trainloader}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RT Epoch }\PY{l+s+si}{\PYZob{}}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{batch\PYZus{}pbar}\PY{p}{:}
+            \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+            \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{p}{)}
+            \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+            \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+        \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+        \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+        \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{wm\PYZus{}acc}\PY{p}{)}
+
+        \PY{n}{epoch\PYZus{}pbar}\PY{o}{.}\PY{n}{set\PYZus{}postfix}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{test\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{wm\PYZus{}acc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{wm\PYZus{}acc}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{results}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{pruning\PYZus{}attack}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+                    \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{prune\PYZus{}percentages}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Fine\PYZhy{}pruning attack (FP): prune least active neurons then fine\PYZhy{}tune.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{if} \PY{n}{prune\PYZus{}percentages} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{prune\PYZus{}percentages} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{30}\PY{p}{,} \PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{60}\PY{p}{,} \PY{l+m+mi}{70}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{,} \PY{l+m+mi}{90}\PY{p}{]}
+
+    \PY{n}{results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prune\PYZus{}pct}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{\PYZcb{}}
+
+    \PY{k}{for} \PY{n}{pct} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n}{prune\PYZus{}percentages}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FP Attack (pruning levels)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+        \PY{n}{pruned\PYZus{}model} \PY{o}{=} \PY{n}{deepcopy}\PY{p}{(}\PY{n}{model}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Prune: zero out the smallest weights by magnitude in conv/linear layers}
+        \PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{param} \PY{o+ow}{in} \PY{n}{pruned\PYZus{}model}\PY{o}{.}\PY{n}{named\PYZus{}parameters}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weight}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{name} \PY{o+ow}{and} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{param}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+                \PY{n}{threshold} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{param}\PY{o}{.}\PY{n}{detach}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{cpu}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{pct}\PY{p}{)}
+                \PY{n}{mask} \PY{o}{=} \PY{p}{(}\PY{n}{torch}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{param}\PY{o}{.}\PY{n}{data}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{threshold}\PY{p}{)}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{p}{)}
+                \PY{n}{param}\PY{o}{.}\PY{n}{data} \PY{o}{*}\PY{o}{=} \PY{n}{mask}
+
+        \PY{c+c1}{\PYZsh{} Fine\PYZhy{}tune for a few epochs to recover accuracy}
+        \PY{n}{criterion} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{(}\PY{p}{)}
+        \PY{n}{optimizer} \PY{o}{=} \PY{n}{optim}\PY{o}{.}\PY{n}{SGD}\PY{p}{(}\PY{n}{pruned\PYZus{}model}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{)}
+        \PY{n}{pruned\PYZus{}model}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{p}{)}
+        \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{FP finetune (}\PY{l+s+si}{\PYZob{}}\PY{n}{pct}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{})}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{trainloader}\PY{p}{:}
+                \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+                \PY{n}{optimizer}\PY{o}{.}\PY{n}{zero\PYZus{}grad}\PY{p}{(}\PY{p}{)}
+                \PY{n}{loss} \PY{o}{=} \PY{n}{criterion}\PY{p}{(}\PY{n}{pruned\PYZus{}model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,} \PY{n}{targets}\PY{p}{)}
+                \PY{n}{loss}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+                \PY{n}{optimizer}\PY{o}{.}\PY{n}{step}\PY{p}{(}\PY{p}{)}
+
+        \PY{n}{pruned\PYZus{}model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+        \PY{n}{test\PYZus{}acc} \PY{o}{=} \PY{n}{evaluate\PYZus{}model}\PY{p}{(}\PY{n}{pruned\PYZus{}model}\PY{p}{,} \PY{n}{testloader}\PY{p}{)}
+        \PY{n}{extracted}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{extract\PYZus{}watermark}\PY{p}{(}\PY{n}{pruned\PYZus{}model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{)}
+        \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{extracted}\PY{p}{)}
+
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prune\PYZus{}pct}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{pct}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}acc}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{wm\PYZus{}acc}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{results}
+
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{input\PYZus{}noising\PYZus{}attack}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,}
+                          \PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{noise\PYZus{}levels}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{n\PYZus{}trials}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Input noising attack (IN): add Gaussian noise at inference.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{if} \PY{n}{noise\PYZus{}levels} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{noise\PYZus{}levels} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mf}{0.02}\PY{p}{,} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+m+mf}{0.08}\PY{p}{,} \PY{l+m+mf}{0.10}\PY{p}{,} \PY{l+m+mf}{0.15}\PY{p}{,} \PY{l+m+mf}{0.20}\PY{p}{]}
+
+    \PY{n}{model}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+    \PY{n}{results} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{p}{]}\PY{p}{\PYZcb{}}
+
+    \PY{k}{for} \PY{n}{std} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n}{noise\PYZus{}levels}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IN Attack (noise levels)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+        \PY{n}{wm\PYZus{}accs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n}{test\PYZus{}accs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+        \PY{k}{for} \PY{n}{trial} \PY{o+ow}{in} \PY{n}{tqdm}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}trials}\PY{p}{)}\PY{p}{,} \PY{n}{desc}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Noise σ=}\PY{l+s+si}{\PYZob{}}\PY{n}{std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{leave}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Test watermark accuracy with noise}
+            \PY{n}{extracted\PYZus{}bits} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trigger\PYZus{}inputs}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{x} \PY{o}{=} \PY{n}{trigger\PYZus{}inputs}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+                    \PY{n}{noise} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randn\PYZus{}like}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{*} \PY{n}{std}
+                    \PY{n}{x\PYZus{}noisy} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n}{noise}
+                    \PY{n}{logits} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{x\PYZus{}noisy}\PY{p}{)}
+                    \PY{n}{pred\PYZus{}class} \PY{o}{=} \PY{n}{logits}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{dim}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+                    \PY{n}{extracted\PYZus{}bits}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{encoding\PYZus{}scheme}\PY{p}{[}\PY{n}{pred\PYZus{}class}\PY{p}{]}\PY{p}{)}
+
+            \PY{n}{wm\PYZus{}acc} \PY{o}{=} \PY{n}{watermark\PYZus{}accuracy}\PY{p}{(}\PY{n}{watermark\PYZus{}bits}\PY{p}{,} \PY{n}{extracted\PYZus{}bits}\PY{p}{)}
+            \PY{n}{wm\PYZus{}accs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{wm\PYZus{}acc}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Test model accuracy with noise}
+            \PY{n}{correct} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{n}{total} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{k}{with} \PY{n}{torch}\PY{o}{.}\PY{n}{no\PYZus{}grad}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{inputs}\PY{p}{,} \PY{n}{targets} \PY{o+ow}{in} \PY{n}{testloader}\PY{p}{:}
+                    \PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)} \PY{o}{+} \PY{n}{torch}\PY{o}{.}\PY{n}{randn\PYZus{}like}\PY{p}{(}\PY{n}{inputs}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{std}
+                    \PY{n}{targets} \PY{o}{=} \PY{n}{targets}\PY{o}{.}\PY{n}{to}\PY{p}{(}\PY{n}{device}\PY{p}{)}
+                    \PY{n}{outputs} \PY{o}{=} \PY{n}{model}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+                    \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{predicted} \PY{o}{=} \PY{n}{outputs}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+                    \PY{n}{total} \PY{o}{+}\PY{o}{=} \PY{n}{targets}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+                    \PY{n}{correct} \PY{o}{+}\PY{o}{=} \PY{n}{predicted}\PY{o}{.}\PY{n}{eq}\PY{p}{(}\PY{n}{targets}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}
+            \PY{n}{test\PYZus{}accs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mf}{100.} \PY{o}{*} \PY{n}{correct} \PY{o}{/} \PY{n}{total}\PY{p}{)}
+
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{std}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{test\PYZus{}accs}\PY{p}{)}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{wm\PYZus{}accs}\PY{p}{)}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Run All Attacks}\label{run-all-attacks}
+
+We use \textbf{Instance A} as our target model for robustness
+evaluation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{target\PYZus{}model} \PY{o}{=} \PY{n}{watermarked\PYZus{}models}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Instance A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{target\PYZus{}wm} \PY{o}{=} \PY{n}{watermarks}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Instance A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running Fine\PYZhy{}Tune (FT) attack...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n}{ft\PYZus{}results} \PY{o}{=} \PY{n}{fine\PYZus{}tune\PYZus{}attack}\PY{p}{(}\PY{n}{target\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,}
+                               \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,}
+                               \PY{n}{target\PYZus{}wm}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running Retrain Last Layer (RT) attack...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n}{rt\PYZus{}results} \PY{o}{=} \PY{n}{retrain\PYZus{}last\PYZus{}layer\PYZus{}attack}\PY{p}{(}\PY{n}{target\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,}
+                                        \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,}
+                                        \PY{n}{target\PYZus{}wm}\PY{p}{,} \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.01}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running Fine\PYZhy{}Pruning (FP) attack...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n}{fp\PYZus{}results} \PY{o}{=} \PY{n}{pruning\PYZus{}attack}\PY{p}{(}\PY{n}{target\PYZus{}model}\PY{p}{,} \PY{n}{trainloader}\PY{p}{,} \PY{n}{testloader}\PY{p}{,}
+                             \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,} \PY{n}{encoding\PYZus{}scheme}\PY{p}{,}
+                             \PY{n}{target\PYZus{}wm}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running Input Noising (IN) attack...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{60}\PY{p}{)}
+\PY{n}{in\PYZus{}results} \PY{o}{=} \PY{n}{input\PYZus{}noising\PYZus{}attack}\PY{p}{(}\PY{n}{target\PYZus{}model}\PY{p}{,} \PY{n}{trigger\PYZus{}inputs}\PY{p}{,} \PY{n}{trigger\PYZus{}pairs}\PY{p}{,}
+                                    \PY{n}{encoding\PYZus{}scheme}\PY{p}{,} \PY{n}{target\PYZus{}wm}\PY{p}{,} \PY{n}{testloader}\PY{p}{,} \PY{n}{n\PYZus{}trials}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{All attacks completed!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+============================================================
+Running Fine-Tune (FT) attack{\ldots}
+============================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Attack:   0\%|          | 0/15 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 1:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 2:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 3:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 4:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 6:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 7:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 8:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 9:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 10:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 11:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 12:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 13:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 14:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FT Epoch 15:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+============================================================
+Running Retrain Last Layer (RT) attack{\ldots}
+============================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Attack:   0\%|          | 0/15 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 1:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 2:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 3:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 4:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 5:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 6:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 7:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 8:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 9:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 10:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 11:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 12:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 13:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 14:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+RT Epoch 15:   0\%|          | 0/391 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+============================================================
+Running Fine-Pruning (FP) attack{\ldots}
+============================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP Attack (pruning levels):   0\%|          | 0/9 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (10\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (20\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (30\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (40\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (50\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (60\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (70\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (80\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+FP finetune (90\%):   0\%|          | 0/3 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+============================================================
+Running Input Noising (IN) attack{\ldots}
+============================================================
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+IN Attack (noise levels):   0\%|          | 0/8 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.00:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.01:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.02:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.05:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.08:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.10:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.15:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Noise σ=0.20:   0\%|          | 0/5 [00:00<?, ?it/s]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+All attacks completed!
+    \end{Verbatim}
+
+    \subsubsection{Robustness Results}\label{robustness-results}
+
+Let's plot the results for each attack, showing how watermark accuracy
+and model accuracy evolve.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Fine\PYZhy{}Tune attack}
+\PY{n}{ax} \PY{o}{=} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Watermark Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{baseline\PYZus{}accuracy}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Baseline Acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epochs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fine\PYZhy{}Tune (FT) Attack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{105}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Retrain Last Layer attack}
+\PY{n}{ax} \PY{o}{=} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Watermark Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{baseline\PYZus{}accuracy}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Baseline Acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epochs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Retrain Last Layer (RT) Attack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{105}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Pruning attack}
+\PY{n}{ax} \PY{o}{=} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prune\PYZus{}pct}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{prune\PYZus{}pct}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Watermark Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{baseline\PYZus{}accuracy}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Baseline Acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pruning Percentage (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fine\PYZhy{}Pruning (FP) Attack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{105}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Input noising attack}
+\PY{n}{ax} \PY{o}{=} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b\PYZhy{}x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r\PYZhy{}o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Watermark Accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{axhline}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{baseline\PYZus{}accuracy}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Baseline Acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Noise Std Dev}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Input Noising (IN) Attack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{,} \PY{l+m+mi}{105}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Robustness Evaluation: Watermark vs Model Accuracy Under Attacks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+m+mf}{1.01}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{Numerical Summary of
+Robustness}\label{numerical-summary-of-robustness}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{70}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ROBUSTNESS SUMMARY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{70}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Baseline test accuracy: }\PY{l+s+si}{\PYZob{}}\PY{n}{baseline\PYZus{}accuracy}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Watermark before attacks: 100.0\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Attack}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}25}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final Test Acc}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final WM Acc}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{58}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fine\PYZhy{}Tune (15 ep)}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}25}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{ft\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Retrain LL (15 ep)}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}25}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{rt\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pruning (90}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}25}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{fp\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Noise (std=0.10)}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}25}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{noise\PYZus{}idx} \PY{o}{=} \PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{index}\PY{p}{(}\PY{l+m+mf}{0.10}\PY{p}{)} \PY{k}{if} \PY{l+m+mf}{0.10} \PY{o+ow}{in} \PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{noise\PYZus{}std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{k}{else} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{noise\PYZus{}idx}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} }\PY{l+s+si}{\PYZob{}}\PY{n}{in\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wm\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{n}{noise\PYZus{}idx}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}14.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+======================================================================
+ROBUSTNESS SUMMARY
+======================================================================
+
+Baseline test accuracy: 93.53\%
+Watermark before attacks: 100.0\%
+
+Attack                     Final Test Acc    Final WM Acc
+----------------------------------------------------------
+Fine-Tune (15 ep)                   93.4\%          100.0\%
+Retrain LL (15 ep)                  92.1\%           66.7\%
+Pruning (90\%)                       92.4\%           76.7\%
+Noise (std=0.10)                    89.8\%          100.0\%
+    \end{Verbatim}
+
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{7. Conclusion}\label{conclusion}
+
+\subsubsection{Summary of Results}\label{summary-of-results}
+
+In this project, we implemented the \textbf{multi-bit black-box
+watermarking scheme} proposed by Leroux et al.~(CVPR Workshop 2024). The
+key findings are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Functionality Preservation:} Watermarked models maintain test
+  accuracy close to the unwatermarked baseline, with minimal
+  degradation.
+\item
+  \textbf{Multi-bit Capacity:} Using K=30 trigger inputs, we can
+  generate up to \(2^{30} \approx 1\) billion unique watermarked model
+  instances, each identifiable through the same set of trigger queries.
+\item
+  \textbf{Fast Embedding:} Watermark embedding takes only a few seconds
+  to a few minutes per instance, making the scheme highly scalable for
+  edge deployment scenarios.
+\item
+  \textbf{Robustness:} The watermark shows varying degrees of resilience
+  against common removal attacks. Fine-tuning and pruning attacks tend
+  to degrade the watermark alongside model accuracy, making aggressive
+  removal self-defeating for the attacker.
+\end{enumerate}
+
+\subsubsection{Key Insight from the Security
+Perspective}\label{key-insight-from-the-security-perspective}
+
+The scheme exploits the fact that trigger inputs sit near the
+\textbf{decision boundary} between two class groups. This makes it easy
+to embed arbitrary bit patterns with minimal model modification, but
+also means the watermark is inherently tied to the model's learned
+decision surface. Attacks that significantly alter this surface will
+also damage the model's primary functionality.
+
+\subsubsection{Comparison with Adi et al.~(USENIX Security
+2018)}\label{comparison-with-adi-et-al.-usenix-security-2018}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2703}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3243}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4054}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Property
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Adi et al.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Leroux et al.
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Watermark type & Zero-bit (ownership proof) & Multi-bit (user
+identification) \\
+Trigger inputs & Random abstract images & Optimized decision-boundary
+samples \\
+Embedding & Training from scratch or fine-tuning & Quick fine-tuning of
+pretrained model \\
+Unique instances & Single watermarked model & \(2^K\) unique
+instances \\
+Same trigger set for all & N/A (single instance) & Yes - key advantage
+for edge AI \\
+\end{longtable}
+}
+
+\subsubsection{Limitations \& Future
+Work}\label{limitations-future-work}
+
+\begin{itemize}
+\tightlist
+\item
+  The watermark's robustness could be improved by incorporating
+  \textbf{error-correcting codes} into the bitstring.
+\item
+  \textbf{Adversarial training} attacks pose a significant threat and
+  deserve deeper investigation.
+\item
+  The approach could be extended to other modalities (NLP, audio) beyond
+  image classification.
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
