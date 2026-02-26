@@ -1,0 +1,5 @@
+watermarking-env/
+data/
+*.pth
+__pycache__/
+.ipynb_checkpoints/
